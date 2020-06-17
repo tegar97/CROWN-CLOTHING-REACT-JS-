@@ -44,7 +44,7 @@ class App extends React.Component {
       <Switch>
          <Route exact path='/' component={HomePage} />
          <Route  path='/shop' component={ShopPage} />
-         <Route  path='/signin' component={SignInAndSignUp} />
+         <Route  path="/signin" component={SignInAndSignUp} />
          <Route   component={NotFound} />
       </Switch>
       
