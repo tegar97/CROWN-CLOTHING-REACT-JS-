@@ -13,7 +13,7 @@ import './header.styles.scss'
 import CartIcon from '../cart/cart.componenent'
 import CartDropdown from '../cart-dropdown/cart-dropdown.component'
 
-const Header = ({currentUser,hidden}) =>  (
+const Header = ({currentUser,hidden,cartItem}) =>  (
     <div className='header'>
         <Link className='logo-container' to='/'>
             <Logo className="logo" />
@@ -44,9 +44,10 @@ const Header = ({currentUser,hidden}) =>  (
     
 )
 
-const mapStateToProps = ({user : {currentUser} ,cart :{hidden}}) => ({
+const mapStateToProps = ({user : {currentUser} ,cart :{hidden},cart: {cartItem}}) => ({
     hidden,
-    currentUser
+    currentUser,
+    cartItem
 })
 
 export default connect(mapStateToProps)(Header)
