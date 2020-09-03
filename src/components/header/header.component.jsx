@@ -1,11 +1,17 @@
 import React from 'react'
+//router dom
 import {Link} from 'react-router-dom'
 
+//firebase
 import {auth} from './../../firebase/firebase.utils'
-
+//redux
+import {connect} from 'react-redux'
+//asset
 import {ReactComponent as Logo} from '../../assets/logo.svg'
 
 import './header.styles.scss'
+import CartIcon from '../cart/cart.componenent'
+import CartDropdown from '../cart-dropdown/cart-dropdown.component'
 
 const Header = ({currentUser}) =>  (
     <div className='header'>
@@ -25,7 +31,16 @@ const Header = ({currentUser}) =>  (
                 :
                 <Link className='option' to="/signin">LOGIN</Link>
             }
+            <CartIcon />
         </div>
+            <CartDropdown/>
     </div>
+   
+    
 )
-export default Header
+
+const mapStateToProps = state => ({
+    currentUser: state.user.currentUser
+})
+
+export default connect(mapStateToProps)(Header)

@@ -52,7 +52,7 @@ import './sign-up-styles.scss'
             <div className="sign-up">
                 <h2 className="title">I dont not have account</h2>
                 <span>Sign up with your email and password</span>
-                <form class="sign-up-form" onSubmit={this.handleSubmit}>
+                <form className="sign-up-form" onSubmit={this.handleSubmit}>
                     <FormInput type="text" name="displayName"  onChange={this.handleChange} value={displayName} label="Display Name" required/>
                     <FormInput type="text" name="email" onChange={this.handleChange} value={email} label="Email" required />   
                     <FormInput type="password" name="password" onChange={this.handleChange} value={password} label="Password" required/>           
