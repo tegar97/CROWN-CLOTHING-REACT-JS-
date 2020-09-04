@@ -13,13 +13,16 @@ import './sign-up-styles.scss'
              displayName : '',
              email : '',
              password : '',
-             confirmPassword: ''
+             confirmPassword: '',
+             submit: 'Submit'
          }
      }
      handleSubmit = async(e) =>{
         e.preventDefault();
         const {displayName,email,password,confirmPassword} = this.state;
-
+        this.setState({
+            submit : 'Loading....'
+        })
         if(password !== confirmPassword) {
             alert("Password do'nt match" );
             return;
@@ -32,7 +35,9 @@ import './sign-up-styles.scss'
                 displayName : '',
                 email : '',
                 password : '',
-                confirmPassword: ''
+                confirmPassword: '',
+                submit : 'Submit'
+             
             })
         } catch (error) {
             console.log(error)
@@ -40,6 +45,7 @@ import './sign-up-styles.scss'
         
 
      }
+   
     handleChange = (event) =>{
         const {value ,name} = event.target;
        
@@ -47,7 +53,7 @@ import './sign-up-styles.scss'
         this.setState({ [name]: value })
      }
     render() {
-        const {displayName,email,password,confirmPassword} = this.state;
+        const {displayName,email,password,confirmPassword,submit} = this.state;
         return (
             <div className="sign-up">
                 <h2 className="title">I dont not have account</h2>
@@ -57,7 +63,7 @@ import './sign-up-styles.scss'
                     <FormInput type="text" name="email" onChange={this.handleChange} value={email} label="Email" required />   
                     <FormInput type="password" name="password" onChange={this.handleChange} value={password} label="Password" required/>           
                     <FormInput type="password" name="confirmPassword" onChange={this.handleChange} value={confirmPassword} label="repeat password" required/>                       
-                    <CustomButton type="submit">Submit</CustomButton>      
+                    <CustomButton type="submit" onClick={this.handleLoading}>{submit}</CustomButton>      
              </form>
             </div>
         )
