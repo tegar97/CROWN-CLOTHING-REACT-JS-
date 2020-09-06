@@ -1,6 +1,6 @@
-import React,{Component} from 'react'
+import React from 'react'
 
-import './sig-in-and-sign-up.styles.scss'
+import { SignInAndSignUpContainer } from './sig-in-and-sign-up.styles.js';
 import SigIn from '../../components/sign-in/sign-in.component'
 import SignUp from '../../components/sign-up/sign-up.component'
 import {createStructuredSelector} from 'reselect'
@@ -10,30 +10,12 @@ import {connect} from 'react-redux'
 
 
 
-export class SignInAndSignUpPage extends Component {
-  render() {
-    const {currentUser} = this.props;
-    console.log(currentUser)
-    if(currentUser !== null){
-      return <div className="warning"><h1>YOU HAS BEEN LOGIN , THE PAGE WILL REDIRECT .....</h1></div>
-     
-    }else{
-      return (
-        
-        <div className='sign-in-and-sign-up'>
-     
-          <SigIn />
-          <SignUp />
-      
-
-         </div>
-  
-      )
-    }
-   
-   
-  }
-}
+const SignInAndSignUpPage = () => (
+  <SignInAndSignUpContainer>
+    <SigIn />
+    <SignUp />
+  </SignInAndSignUpContainer>
+);
 
 const mapStateToProps = createStructuredSelector ({
   currentUser: selectCurrentUser
