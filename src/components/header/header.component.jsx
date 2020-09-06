@@ -1,6 +1,5 @@
 import React from 'react'
 //router dom
-import {Link} from 'react-router-dom'
 
 //firebase
 import {auth} from './../../firebase/firebase.utils'
