@@ -21,10 +21,7 @@ export const ItemDetails = styled.div`
 
   
 `
-export const Img = styled.img`
-   
-`
 
-export const Name = styled.span`
+export const ItemName = styled.span`
      font-size: 16px;
 `
