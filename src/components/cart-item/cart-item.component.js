@@ -1,5 +1,5 @@
 import React from 'react'
-import  {CartItemContainer,ItemDetails,ItemName,Name} from './cart-item.styles'
+import  {CartItemContainer,ItemDetails,ItemName} from './cart-item.styles'
 const CartItem = ({item : {imageUrl,price,name,quantity}}) => (
     <CartItemContainer >
         <img src={imageUrl} alt={name} />
