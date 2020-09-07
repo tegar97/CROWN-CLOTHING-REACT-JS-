@@ -41,8 +41,32 @@ firebase.initializeApp(config)
 export const auth = firebase.auth();
 export const firestore = firebase.firestore()
 
+// export const addCollectionAndDocuments = async(collectionKey,objectToAdd) =>{
+//     const collectionRef = firestore.collection(collectionKey)
+//     const batch = firestore.batch()
+//     objectToAdd.forEach(obj => {
+//         const newDocRef = collectionRef.doc()
+//         console.log(newDocRef)
+//         batch.set(newDocRef,obj)
+//     })
+//     return await batch.commit()
+// }
 
+export const convertCollectionsSnapshotToMap = (collection) => {
+    const transformed = collection.docs.map(doc => {
+        const {title,items} = doc.data()
+        return {
+            routeName : encodeURI(title.toLowerCase()),
+            id: doc.id,
+            title,
+            items    
+            
+        }
+    })
+    console.log(transformed)
 
+   
+}
 
 
 const provider = new firebase.auth.GoogleAuthProvider();
