@@ -1,6 +1,6 @@
 import {ShopActionTypes} from './shop.types'
 
-export const UpdateCollection = collectionMaps => ({
-    type: ShopActionTypes.UPDATE_COLLECTION,
-    payload : collectionMaps
+export const updateCollections = collectionMap => ({
+    type: ShopActionTypes.UPDATE_COLLLECTION,
+    payload : collectionMap
 })
