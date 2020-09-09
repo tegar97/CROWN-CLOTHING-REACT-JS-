@@ -11,8 +11,6 @@ import CollectionsOverviewContainer from '../../components/collection-overview/c
 import CollectionPage from '../collection/collection.component'
 import CollectionPageContainer from './../collection/collection.container'
 
-const CollectionPageWithSpinners = WithSpinner(CollectionPage)
-
 class ShopPage extends React.Component {
 
     componentDidMount() {

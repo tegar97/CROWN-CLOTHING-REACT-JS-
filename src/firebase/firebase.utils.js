@@ -72,9 +72,9 @@ export const convertCollectionsSnapshotToMap = (collection) => {
 }
 
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({pompt: 'select_acount'})
-export const signInWithGoogle = () => auth.signInWithPopup(provider)
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({pompt: 'select_acount'})
+export const signInWithGoogle = () => auth.signInWithPopup(googleProvider)
 
 
 export default firebase;
