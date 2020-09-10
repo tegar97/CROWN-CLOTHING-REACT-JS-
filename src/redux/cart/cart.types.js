@@ -3,6 +3,7 @@ export const cartTypes ={
     ADD_ITEMS : 'ADD_ITEMS',
     REMOVE_ITEMS: 'REMOVE_ITEMS',
     CLEAR_ITEM_FROM_CART: 'CLEAR_ITEM_FROM_CART',
+    CLEAR_CHART : 'CLEAR_CHART'
     
 
 }

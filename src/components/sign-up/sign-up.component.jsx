@@ -5,6 +5,8 @@ import CustomButton from '../button/custom-button.component'
 
 import {auth,createUserProfileDocument} from '../../firebase/firebase.utils';
 import { SignUpContainer, SignUpTitle } from  './sign-up-styles'
+import {SignUpStart} from './../../redux/user/user.action'
+import {connect} from 'react-redux'
 
  class SignUp  extends Component {
      constructor() {
@@ -20,7 +22,10 @@ import { SignUpContainer, SignUpTitle } from  './sign-up-styles'
      }
      handleSubmit = async(e) =>{
         e.preventDefault();
+        const {SignUpStart}  = this.props
         const {displayName,email,password,confirmPassword} = this.state;
+
+        SignUpStart(displayName,email,password,confirmPassword)
         this.setState({
             submit : 'Loading....'
         })
@@ -28,21 +33,7 @@ import { SignUpContainer, SignUpTitle } from  './sign-up-styles'
             alert("Password do'nt match" );
             return;
         }
-        try {
-            const {user}  = await auth.createUserWithEmailAndPassword(email,password)
-
-            await createUserProfileDocument(user,displayName)
-            this.setState({
-                displayName : '',
-                email : '',
-                password : '',
-                confirmPassword: '',
-                submit : 'Submit'
-             
-            })
-        } catch (error) {
-            console.log(error)
-        }
+        
         
 
      }
@@ -70,5 +61,8 @@ import { SignUpContainer, SignUpTitle } from  './sign-up-styles'
         )
     }
 }
+const mapDispatchToProps = dispatch => ({
+    SignUpStart : (displayName,email,password,confirmPassword) => dispatch(SignUpStart({displayName,email,password,confirmPassword}))
+  });
 
-export default SignUp
+export default connect(null,mapDispatchToProps)(SignUp)

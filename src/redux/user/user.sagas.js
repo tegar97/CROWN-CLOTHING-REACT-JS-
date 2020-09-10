@@ -1,6 +1,6 @@
 import {auth,googleProvider,createUserProfileDocument,getCurrentUser} from './../../firebase/firebase.utils'
 import { call, put, takeEvery, takeLatest,all } from 'redux-saga/effects'
-import {SignInSuccess,SigninFailure} from './user.action'
+import {SignInSuccess,SigninFailure,SignoutSuccess,SignoutFailure,SignUpSuccess,SignUpFailure} from './user.action'
 import userTypes from './user.types'
 import { toast } from "react-toastify";
 
@@ -10,8 +10,10 @@ export function* getSnapshotFromUserAuth(userAuth,isCheckUser) {
         const userSnapshot = yield userRef.get();
 
         yield put(SignInSuccess({id: userSnapshot.id,...userSnapshot.data()}))
-  
-        yield toast.success(`SELAMAT DATANG KEMBALI ${userAuth.displayName ? userAuth.displayName : 'Pelanggan'}`);
+        if(!isCheckUser) {
+            yield toast.success(`SELAMAT DATANG KEMBALI ${userAuth.displayName ? userAuth.displayName : 'Pelanggan'}`);
+
+        }
 
         
   
@@ -30,6 +32,7 @@ export function* signInWithGoogle(){
     }
 }
 
+
 export function* sigInWitEmail({payload: {email,password}}){
     try {
         const {user} = yield auth.signInWithEmailAndPassword(email,password)
@@ -39,6 +42,34 @@ export function* sigInWitEmail({payload: {email,password}}){
         yield put(SigninFailure(error))
         yield toast.error(`${error}`);
 
+    }
+}
+export function* SignUp({payload: {email,password,displayName}}) {
+    try {
+        const {user} = yield auth.createUserWithEmailAndPassword(email,password)
+        yield put(SignUpSuccess({user,additionalData: {displayName}}))
+        
+
+    } catch (error) {
+        yield put(SignUpFailure(error))
+    }
+}
+export function* afterSignUpSuccess({payload: {user,displayName}}) {
+    try {
+        yield getSnapshotFromUserAuth({user,additionalData: {displayName}})
+    } catch (error) {
+        yield put(SignUpFailure(error))
+        
+    }
+}
+export function* signOut()  {
+    try {
+        yield auth.signOut()
+        yield put(SignoutSuccess())
+        yield toast.success(`Berhasil logout`);
+
+    } catch (error) {
+        yield put(SignoutFailure())
     }
 }
 
@@ -63,6 +94,18 @@ export function* onEmailAndPasswordSigninStart() {
 export function* onCheckUserSession() {
     yield takeLatest(userTypes.CHECK_USER_SESSION,isUserAuthenticated)
 }
+
+export function* onSignOut() {
+    yield takeLatest(userTypes.SIGN_OUT_START,signOut)
+}
+
+export function* onSignUp() {
+    yield takeLatest(userTypes.SIGN_UP_START,SignUp)
+}
+export function* onSignUpSuccess() {
+    yield takeLatest(userTypes.SIGN_UP_SUCCESS,afterSignUpSuccess)
+}
+
 export function* userSagas() {
-    yield all([call(onGoogleSigninStart),call(onEmailAndPasswordSigninStart),call(onCheckUserSession)])
+    yield all([call(onGoogleSigninStart),call(onEmailAndPasswordSigninStart),call(onCheckUserSession),call(onSignOut),call(onSignUp)])
 }
