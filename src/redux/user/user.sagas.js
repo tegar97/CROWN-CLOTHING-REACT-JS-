@@ -4,16 +4,24 @@ import {SignInSuccess,SigninFailure,SignoutSuccess,SignoutFailure,SignUpSuccess,
 import userTypes from './user.types'
 import { toast } from "react-toastify";
 
-export function* getSnapshotFromUserAuth(userAuth,isCheckUser) {
+export function* getSnapshotFromUserAuth(userAuth,additionalData,toast) {
     try {
-        const userRef = yield call(createUserProfileDocument,userAuth)
-        const userSnapshot = yield userRef.get();
+        yield console.log(additionalData)
+        const userRef = yield call(
+            createUserProfileDocument,
+            userAuth,
+            additionalData
+          );
+          const userSnapshot = yield userRef.get();
+          yield put(SignInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
+            if(!toast){
+                yield toast.success(`SELAMAT DATANG KEMBALI ${userAuth.displayName ? userAuth.displayName : 'Pelanggan'}`);
 
-        yield put(SignInSuccess({id: userSnapshot.id,...userSnapshot.data()}))
-        if(!isCheckUser) {
-            yield toast.success(`SELAMAT DATANG KEMBALI ${userAuth.displayName ? userAuth.displayName : 'Pelanggan'}`);
+            }
 
-        }
+        
+
+        
 
         
   
@@ -46,17 +54,18 @@ export function* sigInWitEmail({payload: {email,password}}){
 }
 export function* SignUp({payload: {email,password,displayName}}) {
     try {
-        const {user} = yield auth.createUserWithEmailAndPassword(email,password)
-        yield put(SignUpSuccess({user,additionalData: {displayName}}))
-        
-
-    } catch (error) {
-        yield put(SignUpFailure(error))
-    }
+        yield alert(displayName)
+        const { user } = yield auth.createUserWithEmailAndPassword(email, password);
+        yield put(SignUpSuccess({ user, additionalData: { displayName } }));
+      } catch (error) {
+        yield put(SignUpFailure(error));
+      }
 }
-export function* afterSignUpSuccess({payload: {user,displayName}}) {
+export function* afterSignUpSuccess({payload: {user,additionalData}}) {
     try {
-        yield getSnapshotFromUserAuth({user,additionalData: {displayName}})
+        yield getSnapshotFromUserAuth(user,additionalData);
+        yield toast.success(`Berhasil daftar'}`);
+
     } catch (error) {
         yield put(SignUpFailure(error))
         
@@ -77,7 +86,7 @@ export function* isUserAuthenticated() {
     try {
         const userAuth = yield getCurrentUser();
         if(!userAuth) return;
-        yield getSnapshotFromUserAuth(userAuth,true)
+        yield getSnapshotFromUserAuth(userAuth,null,true)
         
     } catch (error) {
         yield put(SigninFailure(error))
@@ -107,5 +116,5 @@ export function* onSignUpSuccess() {
 }
 
 export function* userSagas() {
-    yield all([call(onGoogleSigninStart),call(onEmailAndPasswordSigninStart),call(onCheckUserSession),call(onSignOut),call(onSignUp)])
+    yield all([call(onGoogleSigninStart),call(onEmailAndPasswordSigninStart),call(onCheckUserSession),call(onSignOut),call(onSignUp),call(onSignUpSuccess)])
 }

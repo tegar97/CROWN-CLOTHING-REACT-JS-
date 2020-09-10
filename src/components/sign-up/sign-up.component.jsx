@@ -24,10 +24,12 @@ import {connect} from 'react-redux'
         e.preventDefault();
         const {SignUpStart}  = this.props
         const {displayName,email,password,confirmPassword} = this.state;
-
-        SignUpStart(displayName,email,password,confirmPassword)
         this.setState({
             submit : 'Loading....'
+        })
+        SignUpStart({displayName,email,password})
+        this.setState({
+            submit : 'Submit'
         })
         if(password !== confirmPassword) {
             alert("Password do'nt match" );
@@ -62,7 +64,7 @@ import {connect} from 'react-redux'
     }
 }
 const mapDispatchToProps = dispatch => ({
-    SignUpStart : (displayName,email,password,confirmPassword) => dispatch(SignUpStart({displayName,email,password,confirmPassword}))
+    SignUpStart : (userCreditial) => dispatch(SignUpStart(userCreditial))
   });
 
 export default connect(null,mapDispatchToProps)(SignUp)

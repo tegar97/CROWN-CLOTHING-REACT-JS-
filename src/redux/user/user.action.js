@@ -47,9 +47,9 @@ export const SignUpStart = (userData) =>({
     type: userTypes.SIGN_UP_START,
     payload: userData
 })
-export const SignUpSuccess = (user) =>({
+export const SignUpSuccess = ({ user, additionalData }) =>({
     type: userTypes.SIGN_UP_SUCCESS,
-    payload: user
+    payload: { user, additionalData }
 })
 
 export const SignUpFailure = (error) => ({
