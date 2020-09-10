@@ -14,6 +14,11 @@ import  SignInAndSignUpPage from './pages/sign-in-and-sign-up/sig-in-and-sign-up
 import CheckoutPage from './pages/checkout/checkout.component';
 
 import {checkUserSession} from './redux/user/user.action'
+
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const NotFound = () => {
   return(
     <h1>404</h1>
@@ -48,7 +53,16 @@ class App extends React.Component {
          <Route   component={NotFound}  >  
          </Route>
       </Switch>
-      
+      <ToastContainer 
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover />
      
       </div>
      

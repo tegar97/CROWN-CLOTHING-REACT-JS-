@@ -10,10 +10,10 @@ export function* getSnapshotFromUserAuth(userAuth,isCheckUser) {
         const userSnapshot = yield userRef.get();
 
         yield put(SignInSuccess({id: userSnapshot.id,...userSnapshot.data()}))
-        if(!isCheckUser){
-            yield toast.success(`SELAMAT DATANG KEMBALI ${userAuth.displayName ? userAuth.displayName : 'Pelanggan'}`);
+  
+        yield toast.success(`SELAMAT DATANG KEMBALI ${userAuth.displayName ? userAuth.displayName : 'Pelanggan'}`);
 
-        }
+        
   
 
     } catch (error) {
