@@ -1,20 +1,20 @@
 
 import userTypes from './user.types'
+import { toast } from "react-toastify";
+
 const INITIAL_STATE = {
     currentUser: null,
     error: null
 }
 const useReducer = (state = INITIAL_STATE ,action) => {
     switch (action.type) {
-        case userTypes.GOOGLE_SIGN_IN_SUCCESS:
-        case userTypes.EMAIL_SIGN_IN_SUCCESS:
+        case userTypes.SIGN_IN_SUCCESS:
             return{
                 ...state,
                 currentUser: action.payload,
                 error: null
             }
-        case userTypes.GOOGLE_SIGN_IN_FAILURE:
-        case userTypes.EMAIL_SIGN_IN_FAILURE:
+        case userTypes.SIGN_IN_FAILURE:
             return{
                 ...state,
                 error: action.payload

@@ -3,7 +3,6 @@ import {Switch,Route,Redirect} from 'react-router-dom'
 //redux
 import {connect} from 'react-redux'
 import {selectCurrentUser} from './redux/user/user.selectors'
-import {setCurrentUser} from './redux/user/user.action'
 import {createStructuredSelector} from 'reselect'
 //css
 import './App.css';
@@ -14,8 +13,7 @@ import ShopPage from './pages/shop/shop.component';
 import  SignInAndSignUpPage from './pages/sign-in-and-sign-up/sig-in-and-sign-up.component'
 import CheckoutPage from './pages/checkout/checkout.component';
 
-import {auth,createUserProfileDocument} from './firebase/firebase.utils'
-
+import {checkUserSession} from './redux/user/user.action'
 const NotFound = () => {
   return(
     <h1>404</h1>
@@ -26,31 +24,16 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
   
   componentDidMount(){
-
-    const {setCurrentUser} = this.props;
-    
-      this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth =>{
-        // this.setState({currentUser: user})
-        if(userAuth) {
-          const userRef = await createUserProfileDocument(userAuth);
-          await userRef.onSnapshot(snapShot =>{
-             this.setState({
-              setCurrentUser : {
-                 id: snapShot.id,
-                 ...snapShot.data()
-               }
-             },)
-          })
-   
-        }
-        setCurrentUser(userAuth)
-      });
+    const {checkUserSession} = this.props
+    checkUserSession()
       
   }
-
-  componentWillUnmount() {
+  componentWillUnmount(){
     this.unsubscribeFromAuth()
+
   }
+
+
   render(){
     const {currentUser} = this.props;
 
@@ -74,11 +57,12 @@ class App extends React.Component {
   }
  
 }
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user)),
-})
+
 const mapStateToProps = createStructuredSelector ({
   currentUser: selectCurrentUser
+})
+const mapDispatchToProps = (dispatch) =>({
+  checkUserSession : () => dispatch(checkUserSession())
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(App);
