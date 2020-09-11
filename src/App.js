@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {Switch,Route,Redirect} from 'react-router-dom'
 //redux
 import {connect} from 'react-redux'
@@ -24,24 +24,12 @@ const NotFound = () => {
     <h1>404</h1>
   )
 }
-class App extends React.Component {
+const App = ({checkUserSession,currentUser}) => {
 
-  unsubscribeFromAuth = null;
-  
-  componentDidMount(){
-    const {checkUserSession} = this.props
-    checkUserSession()
-      
-  }
-  componentWillUnmount(){
-    this.unsubscribeFromAuth()
-
-  }
-
-
-  render(){
-    const {currentUser} = this.props;
-
+    useEffect(() => {
+      console.log('RENDERED !!!!!')
+      checkUserSession()
+    },[checkUserSession])
     return (
       <div>
       <Header />
@@ -70,7 +58,7 @@ class App extends React.Component {
     
   }
  
-}
+
 
 const mapStateToProps = createStructuredSelector ({
   currentUser: selectCurrentUser

@@ -1,12 +1,11 @@
 import {auth,googleProvider,createUserProfileDocument,getCurrentUser} from './../../firebase/firebase.utils'
-import { call, put, takeEvery, takeLatest,all } from 'redux-saga/effects'
+import { call, put, takeLatest,all } from 'redux-saga/effects'
 import {SignInSuccess,SigninFailure,SignoutSuccess,SignoutFailure,SignUpSuccess,SignUpFailure} from './user.action'
 import userTypes from './user.types'
 import { toast } from "react-toastify";
 
-export function* getSnapshotFromUserAuth(userAuth,additionalData,toast) {
+export function* getSnapshotFromUserAuth(userAuth,additionalData) {
     try {
-        yield console.log(additionalData)
         const userRef = yield call(
             createUserProfileDocument,
             userAuth,
@@ -14,10 +13,7 @@ export function* getSnapshotFromUserAuth(userAuth,additionalData,toast) {
           );
           const userSnapshot = yield userRef.get();
           yield put(SignInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
-            if(!toast){
-                yield toast.success(`SELAMAT DATANG KEMBALI ${userAuth.displayName ? userAuth.displayName : 'Pelanggan'}`);
 
-            }
 
         
 
@@ -34,6 +30,7 @@ export function* signInWithGoogle(){
     try {
         const {user} = yield auth.signInWithPopup(googleProvider)
         yield getSnapshotFromUserAuth(user)
+        yield toast.success(`SELAMAT DATANG KEMBALI ${user.displayName ? user.displayName : 'Pelanggan'}`);
 
     } catch (error) {
         yield put(SigninFailure(error))
@@ -45,6 +42,8 @@ export function* sigInWitEmail({payload: {email,password}}){
     try {
         const {user} = yield auth.signInWithEmailAndPassword(email,password)
         yield getSnapshotFromUserAuth(user)
+        yield toast.success(`SELAMAT DATANG KEMBALI ${user.displayName ? user.displayName : 'Pelanggan'}`);
+
     } catch (error) {
 
         yield put(SigninFailure(error))
@@ -54,7 +53,6 @@ export function* sigInWitEmail({payload: {email,password}}){
 }
 export function* SignUp({payload: {email,password,displayName}}) {
     try {
-        yield alert(displayName)
         const { user } = yield auth.createUserWithEmailAndPassword(email, password);
         yield put(SignUpSuccess({ user, additionalData: { displayName } }));
       } catch (error) {

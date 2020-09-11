@@ -1,6 +1,5 @@
 
 import userTypes from './user.types'
-import { toast } from "react-toastify";
 
 const INITIAL_STATE = {
     currentUser: null,

@@ -1,5 +1,4 @@
 import userTypes from './user.types'
-import { toast } from "react-toastify";
 
 
 export const googleSignInStart = () =>({

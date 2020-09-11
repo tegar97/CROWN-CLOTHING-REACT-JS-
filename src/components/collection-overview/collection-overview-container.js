@@ -1,4 +1,3 @@
-import React from 'react'
 import {createStructuredSelector} from 'reselect'
 import {compose} from 'redux'
 import {selectIsCollectionIsFetching} from './../../redux/collections/shop.selectors'

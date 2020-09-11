@@ -1,9 +1,7 @@
 import React from 'react'
 //router dom
 
-//firebase
-import {auth} from './../../firebase/firebase.utils'
-//redux
+///redux
 import {connect} from 'react-redux'
 import {SignoutStart} from '../../redux/user/user.action'
 //reselect
