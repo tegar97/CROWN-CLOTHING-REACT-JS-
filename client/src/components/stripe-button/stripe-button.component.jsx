@@ -2,11 +2,12 @@ import React from 'react';
 import StripeCheckout from 'react-stripe-checkout'
 import axios from 'axios'
 const StripeCheckoutButton = ({price}) => {
+    
     const priceForStripe = price * 100;
     const publishableKey  = 'pk_test_ALq5FzD2iG4AqmtKvbrHz1Ij00kVa99ImV'
     const onToken = token => {
         axios({
-          url: 'payment',
+          url: 'http://localhost:5000/payment',
           method: 'post',
           data: {
             amount: priceForStripe,

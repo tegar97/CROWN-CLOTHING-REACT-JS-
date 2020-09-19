@@ -37,7 +37,7 @@ const SigIn = ({emailSignInStart,googleSignInStart}) => {
                     <ButtonsBarContainer>
                   
                         <CustomButton type="submit" >Sign In</CustomButton>
-                        <CustomButton  type="button" onClick={googleSignInStart} isGoogleSignIn >Sign In With Google</CustomButton>
+                        <CustomButton  type="button"  onClick={googleSignInStart} isGoogleSignIn >Sign In With Google</CustomButton>
                     </ButtonsBarContainer>
                     
                 </form>

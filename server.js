@@ -2,8 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
-
+const crypto = require('crypto')
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
+const axios = require('axios'); // using Axios library
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -43,3 +44,47 @@ app.post('/payment', (req, res) => {
     }
   });
 });
+app.post('/alfamaret',async(req,res) => {
+  const {price,dataCart} = req.body
+  var apiKey = "DEV-5pmcifJLXAPQivsHR3Ec4vG7w3UrxCdRfOywhyEB";
+  var privateKey = "mRnB2-lGAev-nwHAc-aGjsL-uaFDq";
+
+  var merchant_code = "T0712";
+  var merchant_ref = "INV345675";
+  var amount = price;
+
+  var expiry = parseInt(Math.floor(new Date() / 1000) + (24 * 60 * 60));
+  console.log(expiry)
+  var signature = crypto.createHmac('sha256', privateKey).update(merchant_code + merchant_ref + amount).digest('hex');
+  console.log({price,dataCart})
+
+  var payload = {
+    'method': 'ALFAMART',
+    'merchant_ref': merchant_ref,
+    'amount': amount,
+    'customer_name': 'Nama Pelanggan',
+    'customer_email': 'emailpelanggan@domain.com',
+    'customer_phone': '081234567890',
+    'order_items': dataCart,
+    'callback_url': 'https://domainanda.com/callback',
+    'return_url': 'https://domainanda.com/redirect',
+    'expired_time': expiry,
+    'signature': signature
+  }
+
+  await axios.post('https://payment.tripay.co.id/api-sandbox/transaction/create', payload, {
+      headers: {
+        'Authorization': 'Bearer ' + apiKey
+      }
+    })
+    .then((response) => {
+      
+     
+      
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+
+  
+})

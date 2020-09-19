@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,Suspense,lazy} from 'react';
 import {Switch,Route,Redirect} from 'react-router-dom'
 //redux
 import {connect} from 'react-redux'
@@ -8,16 +8,20 @@ import {createStructuredSelector} from 'reselect'
 import './App.css';
 
 import Header from './components/header/header.component';
-import HomePage from './pages/homepage/homepage.component';
-import ShopPage from './pages/shop/shop.component';
-import  SignInAndSignUpPage from './pages/sign-in-and-sign-up/sig-in-and-sign-up.component'
-import CheckoutPage from './pages/checkout/checkout.component';
 
 import {checkUserSession} from './redux/user/user.action'
 
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Spiner from './components/spiner/Spiner.component';
+
+//Lazy Load
+
+const HomePage = lazy(() =>import('./pages/homepage/homepage.component'))
+const ShopPage = lazy(() => import('./pages/shop/shop.component'))
+const SignInAndSignUpPage = lazy(() => import('./pages/sign-in-and-sign-up/sig-in-and-sign-up.component'))
+const CheckoutPage = lazy(() => import('./pages/checkout/checkout.component'))
 
 const NotFound = () => {
   return(
@@ -27,19 +31,23 @@ const NotFound = () => {
 const App = ({checkUserSession,currentUser}) => {
 
     useEffect(() => {
-      console.log('RENDERED !!!!!')
+   
       checkUserSession()
     },[checkUserSession])
+
+
     return (
       <div>
       <Header />
       <Switch>
-         <Route exact path='/' component={HomePage} />
-         <Route  path='/shop' component={ShopPage} />
-         <Route exact path="/checkout" component={CheckoutPage}/>
-        <Route exact path="/signin" render={() => currentUser ? (<Redirect to="/" />) : (<SignInAndSignUpPage/>)}  ></Route>
-         <Route   component={NotFound}  >  
-         </Route>
+        <Suspense fallback={<Spiner/>}>
+          <Route exact path='/' component={HomePage} />
+          <Route  path='/shop' component={ShopPage} />
+          <Route exact path="/checkout" component={CheckoutPage}/>
+          <Route exact path="/signin" render={() => currentUser ? (<Redirect to="/" />) : (<SignInAndSignUpPage/>)}  ></Route>
+          <Route   component={NotFound} /> 
+  
+        </Suspense>
       </Switch>
       <ToastContainer 
       position="top-right"

@@ -41,3 +41,9 @@ export const WarningContainer = styled.div`
   font-size: 24px;
   color: red;
 `;
+
+export const paymentContainer = styled.div`
+  display: flex
+
+  
+`
